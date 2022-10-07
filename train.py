@@ -6,10 +6,12 @@ import os
 import argparse
 
 from utils.image_processing import denormalize_input
+from models.anime_GAN import Generator
 
 # Global Variables
 GAUSSIAN_MEAN = torch.tensor(0.0)
 GAUSSIAN_STD = torch.tensor(0.1)
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def parse_args():
@@ -75,7 +77,7 @@ def save_examples(generator, loader, args, max_imgs=2, subname="gen"):
 
     for i, (img, *_) in enumerate(loader):
         with torch.no_grad():
-            fake_img = generator(img.cuda())
+            fake_img = generator(img.to(DEVICE))
             fake_img = fake_img.detach().cpu().numpy()
             # Channel first -> channel last
             fake_img = fake_img.transpose(0, 2, 3, 1)
@@ -100,7 +102,7 @@ def main(args):
 
     print("Init models...")
 
-
+    G = Generator(args.dataset).to(DEVICE)
 
 
 if __name__ == '__main__':
