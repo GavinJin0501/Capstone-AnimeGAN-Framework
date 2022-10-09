@@ -1,1 +1,4 @@
 */.DS_Store
+dataset/
+*.zip
+*.pyc

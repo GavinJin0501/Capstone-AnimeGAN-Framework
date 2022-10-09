@@ -4,9 +4,15 @@ import cv2 as cv
 
 import os
 import argparse
+from multiprocessing import cpu_count
 
+from torch import optim
+from torch.utils.data import DataLoader
+
+from utils.dataset import AnimeDataSet
 from utils.image_processing import denormalize_input
-from models.anime_GAN import Generator
+from models.anime_GAN import Generator, Discriminator
+from models.losses import LossSummary, AnimeGanLoss
 
 # Global Variables
 GAUSSIAN_MEAN = torch.tensor(0.0)
@@ -103,6 +109,33 @@ def main(args):
     print("Init models...")
 
     G = Generator(args.dataset).to(DEVICE)
+    D = Discriminator(args).to(DEVICE)
+
+    loss_tracker = LossSummary()
+
+    loss_fn = AnimeGanLoss(args)
+
+    # Create DataLoader
+    data_loader = DataLoader(
+        AnimeDataSet(args),
+        batch_size=args.batch_size,
+        num_workers=cpu_count(),
+        pin_memory=True,
+        shuffle=True,
+        collate_fn=collate_fn
+    )
+
+    optimizer_g = optim.Adam(G.parameters(), lr=args.lr_g, betas=(0.5, 0.999))
+    optimizer_d = optim.Adam(D.parameters(), lr=args.lr_d, betas=(0.5, 0.999))
+
+    start_epoch = 0
+    if args.resume == "GD":
+        # Load G and D
+        try:
+            # start_epoch = load_checkpoint(G, args.checkpoint_dir)
+            pass
+        except:
+            pass
 
 
 if __name__ == '__main__':

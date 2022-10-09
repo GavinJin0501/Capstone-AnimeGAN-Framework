@@ -27,9 +27,9 @@ class SeparableConv2D(nn.Module):
         super(SeparableConv2D, self).__init__()
 
         self.depth_wise = nn.Conv2d(in_channels, in_channels, kernel_size=3,
-                                   stride=stride, padding=1, groups=in_channels, bias=bias)
+                                    stride=stride, padding=1, groups=in_channels, bias=bias)
         self.point_wise = nn.Conv2d(in_channels, out_channels,
-                                   kernel_size=1, stride=1, bias=bias)
+                                    kernel_size=1, stride=1, bias=bias)
 
         self.ins_norm1 = nn.InstanceNorm2d(in_channels)
         self.activation1 = nn.LeakyReLU(0.2, True)
@@ -52,10 +52,11 @@ class SeparableConv2D(nn.Module):
 
 class DownConv(nn.Module):
     """
-    Downsampling module to reduce the resolution of the feature maps.
+    Downsampling module to reduce the resolution of the feature maps to avoid the feature loss caused by max-pooling.
     The input is resized to half the size.
     The output is the sum of the output of DSConv with stride 1 and 2
     """
+
     def __init__(self, channels, bias=False):
         super(DownConv, self).__init__()
 
@@ -76,6 +77,7 @@ class UpConv(nn.Module):
         The input is resized to 2 times the size.
         Used instead of fractionally strided convolutional layer with stride 1/2, because that method can cause the checkerboard artifacts in the synthesized images and affect the quality of the images.
     """
+
     def __init__(self, channels, bias=False):
         super(UpConv, self).__init__()
 
@@ -115,4 +117,3 @@ class InvertedResBlock(nn.Module):
         out = self.ins_norm2(out)
 
         return out + x
-
