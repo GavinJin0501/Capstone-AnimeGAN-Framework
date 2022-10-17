@@ -8,7 +8,9 @@ from multiprocessing import cpu_count
 
 from torch import optim
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
+from utils.common import load_checkpoint, set_lr, save_checkpoint
 from utils.dataset import AnimeDataSet
 from utils.image_processing import denormalize_input
 from models.anime_GAN import Generator, Discriminator
@@ -132,11 +134,108 @@ def main(args):
     if args.resume == "GD":
         # Load G and D
         try:
-            # start_epoch = load_checkpoint(G, args.checkpoint_dir)
-            pass
-        except:
-            pass
+            start_epoch = load_checkpoint(G, args.checkpoint_dir)
+            print("G weight loaded")
+            load_checkpoint(D, args.checkpoint_dir)
+            print("D weight loaded")
+        except Exception as e:
+            print("Could not load checkpoint, train from scratch", e)
+    elif args.resume == "G":
+        try:
+            start_epoch = load_checkpoint(G, args.checkpoint_dir, postfix="_init")
+        except Exception as e:
+            print("Could not load G init checkpoint, train form scratch", e)
+
+    for e in range(start_epoch, args.epochs):
+        print("Epoch %d/%d" % (e, args.epochs))
+        bar = tqdm(data_loader)
+        G.train()
+
+        init_losses = []
+
+        if e < args.init_epochs:
+            # Train with content loss only
+            set_lr(optimizer_g, args.init_lr)
+
+            for img, *_ in bar:
+                img = img.to(DEVICE)
+
+                optimizer_g.zero_grad()
+
+                fake_img = G(img)
+                loss = loss_fn.compute_vgg_content_loss(img, fake_img)
+                loss.backward()
+                optimizer_g.step()
+
+                init_losses.append(loss.cpu().detach().numpy())
+                avg_content_loss = sum(init_losses) / len(init_losses)
+                bar.set_description("[Init Training G] content loss: %.2f" % avg_content_loss)
+
+            set_lr(optimizer_g, args.lr_g)
+            save_checkpoint(G, optimizer_g, e, args, postfix="_init")
+            save_examples(G, data_loader, args, subname="initg")
+            continue
+
+        loss_tracker.reset()
+        for img, style, style_gray, style_smt_gray in bar:
+            img = img.to(DEVICE)
+            style = style.to(DEVICE)
+            style_gray = style_gray.to(DEVICE)
+            style_smt_gray = style_smt_gray.to(DEVICE)
+
+            # ---------------- TRAIN D ---------------- #
+            optimizer_d.zero_grad()
+            fake_img = G(img).detach()
+
+            # Add some Gaussian noise to images before feeding to D
+            if args.d_noise:
+                fake_img += gaussian_noise()
+                style += gaussian_noise()
+                style_gray += gaussian_noise()
+                style_smt_gray += gaussian_noise()
+
+            fake_d = D(fake_img)
+            style_d = D(style)
+            style_gray_d = D(style_gray)
+            style_smt_gray_d = D(style_smt_gray)
+
+            loss_d = loss_fn.compute_discriminator_loss(fake_d, style_d, style_gray_d, style_smt_gray_d)
+            loss_d.backward()
+            optimizer_d.step()
+
+            loss_tracker.update_discriminator_loss(loss_d)
+
+            # ---------------- TRAIN G ---------------- #
+            optimizer_g.zero_grad()
+
+            fake_img = G(img)
+            fake_d = D(fake_img)
+
+            adv_loss, con_loss, gra_loss, col_loss = loss_fn.compute_generator_loss(fake_img, img, fake_d, style_gray)
+            loss_g = adv_loss + col_loss + gra_loss + con_loss
+            loss_g.backward()
+            optimizer_g.step()
+
+            loss_tracker.update_generator_loss(adv_loss, gra_loss, col_loss, con_loss)
+
+            avg_adv, avg_gram, avg_color, avg_content = loss_tracker.get_avg_generator_loss()
+            avg_adv_d = loss_tracker.get_avg_discriminator_loss()
+            bar.set_description("loss G: adv %.2f, con %.2f, gram %.2f, color %.2f / loss D: %.2f" % (avg_adv, avg_content, avg_gram, avg_color, avg_adv_d))
+
+        if e % args.save_interval == 0:
+            save_checkpoint(G, optimizer_g, e, args)
+            save_checkpoint(D, optimizer_d, e, args)
+            save_examples(G, data_loader, args)
 
 
-if __name__ == '__main__':
-    pass
+if __name__ == "__main__":
+    args = parse_args()
+
+    print("# ==== Train Config ==== #")
+    for arg in vars(args):
+        print(arg, getattr(args, arg))
+    print("==========================")
+
+    main(args)
+
+

@@ -26,20 +26,20 @@ class AnimeDataSet(Dataset):
 
         anime_dir = os.path.join(data_dir, dataset)
         if not os.path.exists(data_dir):
-            raise FileNotFoundError(f'Folder {data_dir} does not exist')
+            raise FileNotFoundError("Folder %s does not exist" % data_dir)
 
         if not os.path.exists(anime_dir):
-            raise FileNotFoundError(f'Folder {anime_dir} does not exist')
+            raise FileNotFoundError("Folder %s does not exist" % anime_dir)
 
-        self.mean = compute_data_mean(os.path.join(anime_dir, 'style'))
-        print(f'Mean(B, G, R) of {dataset} are {self.mean}')
+        self.mean = compute_data_mean(os.path.join(anime_dir, "style"))
+        print("Mean(B, G, R) of %s are" % dataset, self.mean)
 
         self.debug_samples = args.debug_samples or 0
         self.data_dir = data_dir
         self.image_files = {}
-        self.photo = 'train_photo'
-        self.style = f'{anime_dir}/style'
-        self.smooth = f'{anime_dir}/smooth'
+        self.photo = "train_photo"
+        self.style = "%s/style" % anime_dir
+        self.smooth = "%s/smooth" % anime_dir
         self.dummy = torch.zeros(3, 256, 256)
 
         for opt in [self.photo, self.style, self.smooth]:
@@ -50,7 +50,7 @@ class AnimeDataSet(Dataset):
 
         self.transform = transform
 
-        print(f'Dataset: real {len(self.image_files[self.photo])} style {self.len_anime}, smooth {self.len_smooth}')
+        print("Dataset: real %d style %d, smooth %d" % (len(self.image_files[self.photo]), self.len_anime, self.len_smooth))
 
     def __len__(self):
         return self.debug_samples or len(self.image_files[self.photo])
@@ -105,7 +105,7 @@ class AnimeDataSet(Dataset):
 
     def _transform(self, img, addmean=True):
         if self.transform is not None:
-            img = self.transform(image=img)['image']
+            img = self.transform(image=img)["image"]
 
         img = img.astype(np.float32)
         if addmean:
@@ -114,11 +114,11 @@ class AnimeDataSet(Dataset):
         return normalize_input(img)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from torch.utils.data import DataLoader
 
-    anime_loader = DataLoader(AnimeDataSet('dataset/Hayao/smooth'), batch_size=2, shuffle=True)
+    anime_loader = DataLoader(AnimeDataSet("dataset/Hayao/smooth"), batch_size=2, shuffle=True)
 
     img, img_gray = iter(anime_loader).next()
     plt.imshow(img[1].numpy().transpose(1, 2, 0))
