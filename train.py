@@ -25,12 +25,12 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="Hayao")
-    parser.add_argument("--data-dir", type=str, default="/content/dataset")
+    parser.add_argument("--data-dir", type=str, default="dataset")
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--init-epochs", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=6)
-    parser.add_argument("--checkpoint-dir", type=int, default="/content/checkpoints")
-    parser.add_argument("--save-image-dir", type=int, default="/content/images")
+    parser.add_argument("--checkpoint-dir", type=str, default="content/checkpoints")
+    parser.add_argument("--save-image-dir", type=str, default="content/images")
     parser.add_argument("--gan-loss", type=str, default="lsgan", help="lsgan/hinge/bce")
     parser.add_argument('--resume', type=str, default='False')
     parser.add_argument('--use_sn', action='store_true')
@@ -110,9 +110,9 @@ def main(args):
 
     print("Init models...")
 
-    G = Generator(args.dataset).to(DEVICE)
+    G = Generator(dataset=args.dataset).to(DEVICE)
     D = Discriminator(args).to(DEVICE)
-
+    return 0
     loss_tracker = LossSummary()
 
     loss_fn = AnimeGanLoss(args)

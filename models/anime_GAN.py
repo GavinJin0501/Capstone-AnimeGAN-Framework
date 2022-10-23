@@ -4,7 +4,7 @@ from models.base_blocks import *
 
 
 class Generator(nn.Module):
-    def __int__(self, dataset=""):
+    def __init__(self, dataset=""):
         super(Generator, self).__init__()
 
         self.name = "generator_%s" % dataset
@@ -17,7 +17,7 @@ class Generator(nn.Module):
             ConvBlock(128, 128, bias=bias),
             SeparableConv2D(128, 256, bias=bias),
             DownConv(256, bias=bias),
-            ConvBlock(256, 256, bias=bias)
+            ConvBlock(256, 256, bias=bias),
         )
 
         self.res_blocks = nn.Sequential(
