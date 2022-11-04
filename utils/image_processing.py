@@ -13,6 +13,31 @@ _rgb_to_yuv_kernel = torch.tensor([
 ]).float().to(DEVICE)
 
 
+def divisible(dim):
+    """
+    Make width and height divisible by 32
+    """
+    width, height = dim
+    return width - (width % 32), height - (height % 32)
+
+
+def resize_image(image, width=None, height=None, inter=cv.INTER_AREA):
+    dim = None
+    h, w = image.shape[:2]
+
+    if width and height:
+        return cv.resize(image, divisible((w, h)), interpolation=inter)
+    
+    if width is None:
+        r = height / float(h)
+        dim = (int(w * r), height)
+    else:
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    return cv.resize(image, divisible(dim), interpolation=inter)
+
+
 def normalize_input(images):
     """
     [0, 255] -> [-1, 1]

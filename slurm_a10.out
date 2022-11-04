@@ -247,3 +247,29 @@ Params size (MB): 240.05
 Estimated Total Size (MB): 512.81
 ----------------------------------------------------------------
 Compute mean (R, G, B) from 1792 images
+Mean(B, G, R) of Hayao are [-4.43483843 -8.66614559 13.10098402]
+Dataset: real 6656, style 1792, smooth 1792
+Epoch 0/100
+Epoch 1/100
+Epoch 2/100
+Epoch 3/100
+Epoch 4/100
+Epoch 5/100
+Epoch 6/100
+Epoch 7/100
+Epoch 8/100
+Epoch 9/100
+Epoch 10/100
+Epoch 11/100
+Epoch 12/100
+Epoch 13/100
+Epoch 14/100
+Epoch 15/100
+Epoch 16/100
+Epoch 17/100
+Epoch 18/100
+Epoch 19/100
+Epoch 20/100
+Epoch 21/100
+Epoch 22/100
+Epoch 23/100

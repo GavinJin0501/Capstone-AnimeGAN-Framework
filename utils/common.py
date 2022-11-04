@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
+import cv2 as cv
 
 HTTP_PREFIXES = [
     'http',
@@ -18,6 +19,16 @@ SUPPORT_WEIGHTS = {
 }
 
 ASSET_HOST = 'https://github.com/ptran1203/pytorch-animeGAN/releases/download/v1.0'
+
+
+def read_image(path):
+    """
+    Read image from given path
+    """"
+    if any(path.startswith(p) for p in HTTP_PREFIXES):
+        urllib.request.urlretrieve(path, "temp.jpg")
+        path = "temp.jpg"
+    return cv.imread(path)[:, :, ::-1]
 
 
 def set_lr(optimizer: optim.Optimizer, lr):
