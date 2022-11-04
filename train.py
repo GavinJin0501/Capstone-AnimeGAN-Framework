@@ -8,6 +8,7 @@ from multiprocessing import cpu_count
 
 from torch import optim
 from torch.utils.data import DataLoader
+from torchsummary import summary
 from tqdm import tqdm
 
 from utils.common import load_checkpoint, set_lr, save_checkpoint
@@ -112,7 +113,9 @@ def main(args):
 
     G = Generator(dataset=args.dataset).to(DEVICE)
     D = Discriminator(args).to(DEVICE)
-    return 0
+    summary(G, (3, 256, 256))
+    summary(D, (3, 256, 256))
+
     loss_tracker = LossSummary()
 
     loss_fn = AnimeGanLoss(args)
@@ -232,6 +235,7 @@ if __name__ == "__main__":
     args = parse_args()
 
     print("# ==== Train Config ==== #")
+    print("Devices you are using:", DEVICE)
     for arg in vars(args):
         print(arg, getattr(args, arg))
     print("==========================")

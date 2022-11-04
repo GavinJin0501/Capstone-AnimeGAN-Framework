@@ -37,7 +37,7 @@ class AnimeDataSet(Dataset):
         self.debug_samples = args.debug_samples or 0
         self.data_dir = data_dir
         self.image_files = {}
-        self.photo = "local_train_photos"
+        self.photo = "train_photo"
         self.style = os.path.join(dataset, "style")
         self.smooth = os.path.join(dataset, "smooth")
         self.dummy = torch.zeros(3, 256, 256)
@@ -50,7 +50,7 @@ class AnimeDataSet(Dataset):
 
         self.transform = transform
 
-        print("Dataset: real %d style %d, smooth %d" % (len(self.image_files[self.photo]), self.len_anime, self.len_smooth))
+        print("Dataset: real %d, style %d, smooth %d" % (len(self.image_files[self.photo]), self.len_anime, self.len_smooth))
 
     def __len__(self):
         return self.debug_samples or len(self.image_files[self.photo])

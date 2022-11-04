@@ -1,0 +1,249 @@
+start training
+# ==== Train Config ==== #
+Devices you are using: cuda
+dataset Hayao
+data_dir dataset
+epochs 100
+init_epochs 5
+batch_size 8
+checkpoint_dir content/checkpoints
+save_image_dir content/images
+gan_loss lsgan
+resume False
+use_sn False
+save_interval 1
+debug_samples 0
+lr_g 0.0002
+lr_d 0.0004
+init_lr 0.001
+wadvg 10.0
+wadvd 10.0
+wcon 1.5
+wgra 3.0
+wcol 30.0
+d_layers 3
+d_noise False
+==========================
+Init models...
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1         [-1, 64, 256, 256]           1,728
+    InstanceNorm2d-2         [-1, 64, 256, 256]               0
+         LeakyReLU-3         [-1, 64, 256, 256]               0
+         ConvBlock-4         [-1, 64, 256, 256]               0
+            Conv2d-5        [-1, 128, 256, 256]          73,728
+    InstanceNorm2d-6        [-1, 128, 256, 256]               0
+         LeakyReLU-7        [-1, 128, 256, 256]               0
+         ConvBlock-8        [-1, 128, 256, 256]               0
+            Conv2d-9        [-1, 128, 128, 128]           1,152
+   InstanceNorm2d-10        [-1, 128, 128, 128]               0
+        LeakyReLU-11        [-1, 128, 128, 128]               0
+           Conv2d-12        [-1, 128, 128, 128]          16,384
+   InstanceNorm2d-13        [-1, 128, 128, 128]               0
+        LeakyReLU-14        [-1, 128, 128, 128]               0
+  SeparableConv2D-15        [-1, 128, 128, 128]               0
+           Conv2d-16        [-1, 128, 128, 128]           1,152
+   InstanceNorm2d-17        [-1, 128, 128, 128]               0
+        LeakyReLU-18        [-1, 128, 128, 128]               0
+           Conv2d-19        [-1, 128, 128, 128]          16,384
+   InstanceNorm2d-20        [-1, 128, 128, 128]               0
+        LeakyReLU-21        [-1, 128, 128, 128]               0
+  SeparableConv2D-22        [-1, 128, 128, 128]               0
+         DownConv-23        [-1, 128, 128, 128]               0
+           Conv2d-24        [-1, 128, 128, 128]         147,456
+   InstanceNorm2d-25        [-1, 128, 128, 128]               0
+        LeakyReLU-26        [-1, 128, 128, 128]               0
+        ConvBlock-27        [-1, 128, 128, 128]               0
+           Conv2d-28        [-1, 128, 128, 128]           1,152
+   InstanceNorm2d-29        [-1, 128, 128, 128]               0
+        LeakyReLU-30        [-1, 128, 128, 128]               0
+           Conv2d-31        [-1, 256, 128, 128]          32,768
+   InstanceNorm2d-32        [-1, 256, 128, 128]               0
+        LeakyReLU-33        [-1, 256, 128, 128]               0
+  SeparableConv2D-34        [-1, 256, 128, 128]               0
+           Conv2d-35          [-1, 256, 64, 64]           2,304
+   InstanceNorm2d-36          [-1, 256, 64, 64]               0
+        LeakyReLU-37          [-1, 256, 64, 64]               0
+           Conv2d-38          [-1, 256, 64, 64]          65,536
+   InstanceNorm2d-39          [-1, 256, 64, 64]               0
+        LeakyReLU-40          [-1, 256, 64, 64]               0
+  SeparableConv2D-41          [-1, 256, 64, 64]               0
+           Conv2d-42          [-1, 256, 64, 64]           2,304
+   InstanceNorm2d-43          [-1, 256, 64, 64]               0
+        LeakyReLU-44          [-1, 256, 64, 64]               0
+           Conv2d-45          [-1, 256, 64, 64]          65,536
+   InstanceNorm2d-46          [-1, 256, 64, 64]               0
+        LeakyReLU-47          [-1, 256, 64, 64]               0
+  SeparableConv2D-48          [-1, 256, 64, 64]               0
+         DownConv-49          [-1, 256, 64, 64]               0
+           Conv2d-50          [-1, 256, 64, 64]         589,824
+   InstanceNorm2d-51          [-1, 256, 64, 64]               0
+        LeakyReLU-52          [-1, 256, 64, 64]               0
+        ConvBlock-53          [-1, 256, 64, 64]               0
+           Conv2d-54          [-1, 512, 64, 64]         131,072
+   InstanceNorm2d-55          [-1, 512, 64, 64]               0
+        LeakyReLU-56          [-1, 512, 64, 64]               0
+        ConvBlock-57          [-1, 512, 64, 64]               0
+           Conv2d-58          [-1, 512, 64, 64]           4,608
+   InstanceNorm2d-59          [-1, 512, 64, 64]               0
+        LeakyReLU-60          [-1, 512, 64, 64]               0
+           Conv2d-61          [-1, 256, 64, 64]         131,072
+   InstanceNorm2d-62          [-1, 256, 64, 64]               0
+ InvertedResBlock-63          [-1, 256, 64, 64]               0
+           Conv2d-64          [-1, 512, 64, 64]         131,072
+   InstanceNorm2d-65          [-1, 512, 64, 64]               0
+        LeakyReLU-66          [-1, 512, 64, 64]               0
+        ConvBlock-67          [-1, 512, 64, 64]               0
+           Conv2d-68          [-1, 512, 64, 64]           4,608
+   InstanceNorm2d-69          [-1, 512, 64, 64]               0
+        LeakyReLU-70          [-1, 512, 64, 64]               0
+           Conv2d-71          [-1, 256, 64, 64]         131,072
+   InstanceNorm2d-72          [-1, 256, 64, 64]               0
+ InvertedResBlock-73          [-1, 256, 64, 64]               0
+           Conv2d-74          [-1, 512, 64, 64]         131,072
+   InstanceNorm2d-75          [-1, 512, 64, 64]               0
+        LeakyReLU-76          [-1, 512, 64, 64]               0
+        ConvBlock-77          [-1, 512, 64, 64]               0
+           Conv2d-78          [-1, 512, 64, 64]           4,608
+   InstanceNorm2d-79          [-1, 512, 64, 64]               0
+        LeakyReLU-80          [-1, 512, 64, 64]               0
+           Conv2d-81          [-1, 256, 64, 64]         131,072
+   InstanceNorm2d-82          [-1, 256, 64, 64]               0
+ InvertedResBlock-83          [-1, 256, 64, 64]               0
+           Conv2d-84          [-1, 512, 64, 64]         131,072
+   InstanceNorm2d-85          [-1, 512, 64, 64]               0
+        LeakyReLU-86          [-1, 512, 64, 64]               0
+        ConvBlock-87          [-1, 512, 64, 64]               0
+           Conv2d-88          [-1, 512, 64, 64]           4,608
+   InstanceNorm2d-89          [-1, 512, 64, 64]               0
+        LeakyReLU-90          [-1, 512, 64, 64]               0
+           Conv2d-91          [-1, 256, 64, 64]         131,072
+   InstanceNorm2d-92          [-1, 256, 64, 64]               0
+ InvertedResBlock-93          [-1, 256, 64, 64]               0
+           Conv2d-94          [-1, 512, 64, 64]         131,072
+   InstanceNorm2d-95          [-1, 512, 64, 64]               0
+        LeakyReLU-96          [-1, 512, 64, 64]               0
+        ConvBlock-97          [-1, 512, 64, 64]               0
+           Conv2d-98          [-1, 512, 64, 64]           4,608
+   InstanceNorm2d-99          [-1, 512, 64, 64]               0
+       LeakyReLU-100          [-1, 512, 64, 64]               0
+          Conv2d-101          [-1, 256, 64, 64]         131,072
+  InstanceNorm2d-102          [-1, 256, 64, 64]               0
+InvertedResBlock-103          [-1, 256, 64, 64]               0
+          Conv2d-104          [-1, 512, 64, 64]         131,072
+  InstanceNorm2d-105          [-1, 512, 64, 64]               0
+       LeakyReLU-106          [-1, 512, 64, 64]               0
+       ConvBlock-107          [-1, 512, 64, 64]               0
+          Conv2d-108          [-1, 512, 64, 64]           4,608
+  InstanceNorm2d-109          [-1, 512, 64, 64]               0
+       LeakyReLU-110          [-1, 512, 64, 64]               0
+          Conv2d-111          [-1, 256, 64, 64]         131,072
+  InstanceNorm2d-112          [-1, 256, 64, 64]               0
+InvertedResBlock-113          [-1, 256, 64, 64]               0
+          Conv2d-114          [-1, 512, 64, 64]         131,072
+  InstanceNorm2d-115          [-1, 512, 64, 64]               0
+       LeakyReLU-116          [-1, 512, 64, 64]               0
+       ConvBlock-117          [-1, 512, 64, 64]               0
+          Conv2d-118          [-1, 512, 64, 64]           4,608
+  InstanceNorm2d-119          [-1, 512, 64, 64]               0
+       LeakyReLU-120          [-1, 512, 64, 64]               0
+          Conv2d-121          [-1, 256, 64, 64]         131,072
+  InstanceNorm2d-122          [-1, 256, 64, 64]               0
+InvertedResBlock-123          [-1, 256, 64, 64]               0
+          Conv2d-124          [-1, 512, 64, 64]         131,072
+  InstanceNorm2d-125          [-1, 512, 64, 64]               0
+       LeakyReLU-126          [-1, 512, 64, 64]               0
+       ConvBlock-127          [-1, 512, 64, 64]               0
+          Conv2d-128          [-1, 512, 64, 64]           4,608
+  InstanceNorm2d-129          [-1, 512, 64, 64]               0
+       LeakyReLU-130          [-1, 512, 64, 64]               0
+          Conv2d-131          [-1, 256, 64, 64]         131,072
+  InstanceNorm2d-132          [-1, 256, 64, 64]               0
+InvertedResBlock-133          [-1, 256, 64, 64]               0
+          Conv2d-134          [-1, 128, 64, 64]         294,912
+  InstanceNorm2d-135          [-1, 128, 64, 64]               0
+       LeakyReLU-136          [-1, 128, 64, 64]               0
+       ConvBlock-137          [-1, 128, 64, 64]               0
+          Conv2d-138        [-1, 128, 128, 128]           1,152
+  InstanceNorm2d-139        [-1, 128, 128, 128]               0
+       LeakyReLU-140        [-1, 128, 128, 128]               0
+          Conv2d-141        [-1, 128, 128, 128]          16,384
+  InstanceNorm2d-142        [-1, 128, 128, 128]               0
+       LeakyReLU-143        [-1, 128, 128, 128]               0
+ SeparableConv2D-144        [-1, 128, 128, 128]               0
+          UpConv-145        [-1, 128, 128, 128]               0
+          Conv2d-146        [-1, 128, 128, 128]           1,152
+  InstanceNorm2d-147        [-1, 128, 128, 128]               0
+       LeakyReLU-148        [-1, 128, 128, 128]               0
+          Conv2d-149        [-1, 128, 128, 128]          16,384
+  InstanceNorm2d-150        [-1, 128, 128, 128]               0
+       LeakyReLU-151        [-1, 128, 128, 128]               0
+ SeparableConv2D-152        [-1, 128, 128, 128]               0
+          Conv2d-153        [-1, 128, 128, 128]         147,456
+  InstanceNorm2d-154        [-1, 128, 128, 128]               0
+       LeakyReLU-155        [-1, 128, 128, 128]               0
+       ConvBlock-156        [-1, 128, 128, 128]               0
+          Conv2d-157        [-1, 128, 256, 256]           1,152
+  InstanceNorm2d-158        [-1, 128, 256, 256]               0
+       LeakyReLU-159        [-1, 128, 256, 256]               0
+          Conv2d-160        [-1, 128, 256, 256]          16,384
+  InstanceNorm2d-161        [-1, 128, 256, 256]               0
+       LeakyReLU-162        [-1, 128, 256, 256]               0
+ SeparableConv2D-163        [-1, 128, 256, 256]               0
+          UpConv-164        [-1, 128, 256, 256]               0
+          Conv2d-165         [-1, 64, 256, 256]          73,728
+  InstanceNorm2d-166         [-1, 64, 256, 256]               0
+       LeakyReLU-167         [-1, 64, 256, 256]               0
+       ConvBlock-168         [-1, 64, 256, 256]               0
+          Conv2d-169         [-1, 64, 256, 256]          36,864
+  InstanceNorm2d-170         [-1, 64, 256, 256]               0
+       LeakyReLU-171         [-1, 64, 256, 256]               0
+       ConvBlock-172         [-1, 64, 256, 256]               0
+          Conv2d-173          [-1, 3, 256, 256]             192
+            Tanh-174          [-1, 3, 256, 256]               0
+================================================================
+Total params: 3,757,184
+Trainable params: 3,757,184
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.75
+Forward/backward pass size (MB): 3195.00
+Params size (MB): 14.33
+Estimated Total Size (MB): 3210.08
+----------------------------------------------------------------
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1         [-1, 32, 256, 256]             864
+         LeakyReLU-2         [-1, 32, 256, 256]               0
+            Conv2d-3         [-1, 64, 128, 128]          18,432
+         LeakyReLU-4         [-1, 64, 128, 128]               0
+            Conv2d-5        [-1, 128, 128, 128]          73,728
+    InstanceNorm2d-6        [-1, 128, 128, 128]               0
+         LeakyReLU-7        [-1, 128, 128, 128]               0
+            Conv2d-8          [-1, 256, 64, 64]         294,912
+         LeakyReLU-9          [-1, 256, 64, 64]               0
+           Conv2d-10          [-1, 512, 64, 64]       1,179,648
+   InstanceNorm2d-11          [-1, 512, 64, 64]               0
+        LeakyReLU-12          [-1, 512, 64, 64]               0
+           Conv2d-13         [-1, 1024, 32, 32]       4,718,592
+        LeakyReLU-14         [-1, 1024, 32, 32]               0
+           Conv2d-15         [-1, 2048, 32, 32]      18,874,368
+   InstanceNorm2d-16         [-1, 2048, 32, 32]               0
+        LeakyReLU-17         [-1, 2048, 32, 32]               0
+           Conv2d-18         [-1, 2048, 32, 32]      37,748,736
+   InstanceNorm2d-19         [-1, 2048, 32, 32]               0
+        LeakyReLU-20         [-1, 2048, 32, 32]               0
+           Conv2d-21            [-1, 1, 32, 32]          18,432
+================================================================
+Total params: 62,927,712
+Trainable params: 62,927,712
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.75
+Forward/backward pass size (MB): 272.01
+Params size (MB): 240.05
+Estimated Total Size (MB): 512.81
+----------------------------------------------------------------
+Compute mean (R, G, B) from 1792 images

@@ -73,7 +73,7 @@ def _download_weight(weight):
     os.makedirs('.cache', exist_ok=True)
     url = f'{ASSET_HOST}/{filename}'
     save_path = f'.cache/{filename}'
-
+    print("save_path:", save_path)
     if os.path.isfile(save_path):
         return save_path
 
